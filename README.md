@@ -19,13 +19,13 @@ This project demonstrates how to pair and send data between two devices connecte
 ### Installation
 
 1. Clone the repository:
-git clone https://github.com/jasimameen/p2p-transfer-transfer.git
+<pre> git clone https://github.com/jasimameen/p2p-transfer-transfer.git </pre>
 
 2. Navigate to the project directory:
-cd wifi-hotspot-data-transfer
+<pre> cd p2p-transfer </pre>
 
 3. Install dependencies:
-flutter pub get
+<pre> flutter pub get </pre>
 
 
 ## Usage
