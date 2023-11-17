@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:p2p_transfer/presentation/home/home_screen.dart';
 
 Future<void> main() async {
   runApp(const MyApp());
@@ -11,14 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
-      ),
+      home: const HomeScreen(),
+      themeMode: ThemeMode.dark,
+      theme: ThemeData.dark(useMaterial3: true)
+          .copyWith(platform: TargetPlatform.iOS),
     );
   }
 }

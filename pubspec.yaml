@@ -11,6 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  wifi_iot: ^0.3.18+1
+  socket_io_client: ^2.0.3+1
+  socket_io_common: ^2.0.3
 
 dev_dependencies:
   flutter_test:
