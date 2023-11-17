@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:p2p_transfer/core/stdout.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -15,21 +13,34 @@ Future<ServerSocket> createServer() async {
   // (socket.asBroadcastStream()).listen((event) {
   //   print(event.toString());
   // });
+  socket.asBroadcastStream(
+    onListen: (subscription) {
+      subscription.onData((data) {
+        print('data from broadcast from clint');
+      });
+    },
+  );
 
-  socket.listen((client) {
-    dPrint("listening remote ${client.remoteAddress.toString()}");
-    dPrint("listening port: ${client.remotePort.toString()}");
-
-    // client.write("hei ima sjsj");
-    client.writeln("hei iam server");
-
-    dPrint(client.address.toString());
-    client.asBroadcastStream(
-      onListen: (subscription) {
-        print(subscription.toString());
-      },
-    );
+  socket.listen((Socket socket) {
+    socket.listen((List<int> data) {
+      print(data);
+    });
   });
+
+  // socket.listen((client) {
+  //   dPrint("listening remote ${client.remoteAddress.toString()}");
+  //   dPrint("listening port: ${client.remotePort.toString()}");
+
+  //   // client.write("hei ima sjsj");
+  //   client.writeln("hei iam server");
+
+  //   dPrint(client.address.toString());
+  //   client.asBroadcastStream(
+  //     onListen: (subscription) {
+  //       print(subscription.toString());
+  //     },
+  //   );
+  // });
 
   return socket;
 }
@@ -43,23 +54,29 @@ void createClientAndSendData(ip, dynamic data) {
           .enableReconnection()
           .build());
 
-  socket.connect();
+  // socket.onConnecting((data) {
+  //   dPrint("connecting");
+  // });
 
-  socket.onConnecting((data) {
-    dPrint("connecting");
+  // socket.onConnect((handler) {
+  //   dPrint("onConnect: ${handler.toString()}");
+  //   socket.emit('data', data);
+  // });
+
+  // print("conneted: ${socket.connected}");
+  // socket.onAny((event, data) {
+  //   dPrint("event: $event");
+  //   dPrint("onAny: ${data.toString()}");
+  // });
+  socket.on('s', (data) {
+    print("yay s event data is here: $data");
   });
-
-  socket.onConnect((handler) {
-    dPrint("onConnect: ${handler.toString()}");
-    socket.emit('data', data);
+  socket.onConnect((data) {
+    socket.emit('i', 'heyyy i am client');
+    print('connection establihed');
   });
-
-  print("conneted: ${socket.connected}");
-  socket.onAny((event, data) {
-    dPrint("event: $event");
-    dPrint("onAny: ${data.toString()}");
-  });
-
   socket.onError((data) => dPrint("socker onError: $data"));
-  socket.on("data", (data) => debugPrint("socket on data: $data"));
+  socket.on("data", (data) => debugPrint("socket dat on event: data: $data"));
+
+  socket.connect();
 }
